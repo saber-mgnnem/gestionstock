@@ -1,0 +1,97 @@
+.trip-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.trip-image {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.trip-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.trip-status.confirmed {
+  background-color: rgba(46, 204, 113, 0.9);
+  color: white;
+}
+
+.trip-status.pending {
+  background-color: rgba(243, 156, 18, 0.9);
+  color: white;
+}
+
+.trip-details {
+  padding: 15px;
+}
+
+.trip-details h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: var(--dark-color);
+}
+
+.trip-dates {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.date-icon {
+  margin-right: 8px;
+}
+
+.trip-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.trip-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 5px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.details-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.details-btn:hover {
+  background-color: #2980b9;
+}
+
+.itinerary-btn {
+  background-color: #f5f7fa;
+  color: var(--dark-color);
+  border: 1px solid #ddd;
+}
+
+.itinerary-btn:hover {
+  background-color: #eee;
+}

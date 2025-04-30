@@ -1,0 +1,95 @@
+.destination-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease;
+}
+
+.destination-card:hover {
+  transform: translateY(-5px);
+}
+
+.destination-image {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.destination-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.destination-card:hover .destination-overlay {
+  opacity: 1;
+}
+
+.explore-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.explore-btn:hover {
+  background-color: #2980b9;
+}
+
+.destination-details {
+  padding: 15px;
+}
+
+.destination-details h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: var(--dark-color);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  color: #ddd;
+  font-size: 16px;
+}
+
+.star.full {
+  color: var(--accent-color);
+}
+
+.star.half {
+  position: relative;
+  color: #ddd;
+}
+
+.star.half:before {
+  content: "★";
+  position: absolute;
+  color: var(--accent-color);
+  width: 50%;
+  overflow: hidden;
+}
+
+.rating-value {
+  margin-left: 5px;
+  font-size: 14px;
+  color: #7f8c8d;
+}

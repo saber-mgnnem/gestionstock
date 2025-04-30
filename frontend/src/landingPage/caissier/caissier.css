@@ -1,0 +1,670 @@
+/* Base Styles */
+.caissier-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.caissier-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hb{
+  display: flex;
+}
+.caissier-header h1 {
+  margin: 0;
+  font-size: 24px;
+
+}
+
+.caissier-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 14px;
+}
+
+/* Main Layout */
+.caissier-main {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  gap: 20px;
+}
+
+.caissier-products-section {
+  flex: 2;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.caissier-cart-section {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+/* Controls */
+.caissier-controls {
+  padding: 15px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.caissier-search input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.caissier-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.caissier-categories button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.caissier-categories button:hover {
+  background-color: #e0e0e0;
+}
+
+.caissier-categories button.active {
+  background-color: #3498db;
+  color: white;
+}
+
+/* Products Grid */
+.caissier-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  padding: 15px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+
+.caissier-product-card {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.caissier-product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.caissier-product-image {
+  height: 120px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+}
+
+.caissier-product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.caissier-product-info {
+  padding: 10px;
+}
+
+.caissier-product-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+}
+
+.caissier-product-category {
+  color: #666;
+  font-size: 12px;
+  margin: 0 0 5px 0;
+}
+
+.caissier-product-price {
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0 0 5px 0;
+}
+
+.caissier-product-stock {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+.caissier-no-products {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* Cart Section */
+.caissier-cart-section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #2c3e50;
+}
+
+.caissier-customer-info {
+  margin-bottom: 20px;
+}
+
+.caissier-input-group {
+  margin-bottom: 10px;
+}
+
+.caissier-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.caissier-input-group input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.caissier-cart-items {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  max-height: 300px;
+}
+
+.caissier-cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.caissier-cart-item-info {
+  flex: 2;
+}
+
+.caissier-cart-item-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+}
+
+.caissier-cart-item-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.caissier-cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.caissier-cart-item-actions button {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.caissier-cart-item-actions span {
+  min-width: 20px;
+  text-align: center;
+}
+
+.caissier-remove-btn {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.caissier-cart-item-total {
+  font-weight: bold;
+  min-width: 70px;
+  text-align: right;
+}
+
+.caissier-empty-cart {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.caissier-order-summary {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.caissier-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.caissier-total {
+  font-weight: bold;
+  font-size: 18px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.caissier-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.caissier-cancel-btn {
+  flex: 1;
+  padding: 10px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.caissier-checkout-btn {
+  flex: 1;
+  padding: 10px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal */
+.caissier-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.caissier-payment-modal,
+.caissier-receipt-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.caissier-payment-modal h2,
+.caissier-receipt-modal h2 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.caissier-payment-details {
+  margin-bottom: 20px;
+}
+
+.caissier-payment-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.caissier-payment-method {
+  margin-bottom: 20px;
+}
+
+.caissier-payment-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.caissier-payment-options label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.caissier-cash-payment {
+  margin-top: 15px;
+}
+
+.caissier-change {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.caissier-card-payment,
+.caissier-mobile-payment {
+  text-align: center;
+  padding: 20px;
+}
+
+.caissier-card-animation {
+  height: 100px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  margin: 15px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.caissier-card-animation::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: cardSwipe 1.5s infinite;
+}
+
+@keyframes cardSwipe {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.caissier-qr-placeholder {
+  width: 150px;
+  height: 150px;
+  margin: 15px auto;
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+.caissier-qr-placeholder::before,
+.caissier-qr-placeholder::after {
+  content: "";
+  position: absolute;
+  background-color: #2c3e50;
+}
+
+.caissier-qr-placeholder::before {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  background-color: white;
+}
+
+.caissier-qr-placeholder::after {
+  top: 30px;
+  left: 30px;
+  right: 30px;
+  bottom: 30px;
+  background-color: #2c3e50;
+  background-image: linear-gradient(#2c3e50 10px, transparent 10px),
+    linear-gradient(90deg, #2c3e50 10px, transparent 10px), linear-gradient(#2c3e50 10px, transparent 10px),
+    linear-gradient(90deg, #2c3e50 10px, transparent 10px);
+  background-size: 30px 30px;
+  background-position: -10px -10px, -10px -10px, -10px -10px, -10px -10px;
+}
+
+.caissier-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.caissier-confirm-btn {
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Receipt Styles */
+.caissier-receipt {
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.caissier-receipt-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.caissier-receipt-header h2 {
+  margin: 0 0 10px 0;
+}
+
+.caissier-receipt-header p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.caissier-receipt-items {
+  margin-bottom: 20px;
+}
+
+.caissier-receipt-items table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.caissier-receipt-items th,
+.caissier-receipt-items td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.caissier-receipt-items th {
+  font-weight: bold;
+  color: #666;
+}
+
+.caissier-receipt-summary {
+  margin-bottom: 20px;
+}
+
+.caissier-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.caissier-receipt-total {
+  font-weight: bold;
+  font-size: 18px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.caissier-receipt-footer {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+}
+
+.caissier-receipt-footer p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.caissier-receipt-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.caissier-print-btn,
+.caissier-new-order-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.caissier-print-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.caissier-new-order-btn {
+  background-color: #2ecc71;
+  color: white;
+}
+
+/* Loading and Error States */
+.caissier-loading,
+.caissier-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 18px;
+}
+
+.caissier-error {
+  color: #e74c3c;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .caissier-main {
+    flex-direction: column;
+  }
+
+  .caissier-cart-section {
+    max-width: none;
+  }
+
+  .caissier-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .caissier-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .caissier-user-info {
+    margin-top: 10px;
+    align-items: flex-start;
+  }
+
+  .caissier-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .caissier-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .caissier-product-info h3 {
+    font-size: 14px;
+  }
+
+  .caissier-actions {
+    flex-direction: column;
+  }
+}
+
+
+
+.logout {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout:hover {
+  background-color: #d9363e;
+  transform: scale(1.03);
+}
+
+.logout:active {
+  transform: scale(0.98);
+}
+
+  

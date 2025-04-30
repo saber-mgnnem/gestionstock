@@ -1,0 +1,129 @@
+.orders-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+      "Helvetica Neue", sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    
+  }
+  
+  .orders-container h2 {
+    margin-top: 100px;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .orders-table-wrapper {
+    overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+  }
+  
+  .orders-table {
+    width: 100%;
+
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+  .orders-table th,
+  .orders-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .orders-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+  
+  .orders-table th:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .orders-table tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .sort-indicator {
+    margin-left: 4px;
+    font-weight: bold;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .status-pending {
+    background-color: #fff8e1;
+    color: #ffa000;
+  }
+  
+  .status-processing {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .status-shipped {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  .status-delivered {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 600;
+  }
+  
+  .status-cancelled {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .orders-loading,
+  .orders-error,
+  .no-orders {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .orders-error {
+    color: #d32f2f;
+    background-color: #ffebee;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .orders-table th,
+    .orders-table td {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+  
+    .orders-container h2 {
+      font-size: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .orders-table th,
+    .orders-table td {
+      padding: 8px;
+      font-size: 13px;
+    }
+  }
+  
