@@ -2,7 +2,7 @@
 
 # dependencies
 <<<<<<< HEAD
-oxygen/node_modules
+frontend/node_modules
 /.pnp
 .pnp.js
 /node_modules
@@ -10,7 +10,7 @@ oxygen/node_modules
 /.pnp
 .pnp.js
 /package-lock.json
-oxygen/node_modules/
+frontend/node_modules/
 >>>>>>> cc7cfcd67654bca07142eccbc2c754e028bed3f6
 
 # testing
@@ -29,3 +29,5 @@ oxygen/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+node_modules/
+.cache/
