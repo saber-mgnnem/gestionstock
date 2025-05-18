@@ -22,7 +22,9 @@ const BoutiqueOrders = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get("http://localhost:5050/ordersboutique");
-      setOrders(response.data);
+      const sortedOrders = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      setOrders(sortedOrders);
     } catch (error) {
       console.error("Error fetching orders", error);
     }

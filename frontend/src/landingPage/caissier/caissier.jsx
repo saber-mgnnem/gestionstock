@@ -74,28 +74,8 @@ export default function Caissier() {
         console.error("Error fetching data:", err)
         setError(err.message)
         
-        // Set sample data for demonstration
-        const sampleCategories = [
-          { id: 1, name: "Clothing" },
-          { id: 2, name: "Accessories" },
-          { id: 3, name: "Shoes" },
-          { id: 4, name: "Beauty" }
-        ]
-        
-        const sampleProducts = [
-          { id: 1, name: "T-Shirt", price: 19.99, categoryId: 1, image: "/placeholder.svg", stock: 25 },
-          { id: 2, name: "Jeans", price: 49.99, categoryId: 1, image: "/placeholder.svg", stock: 15 },
-          { id: 3, name: "Handbag", price: 39.99, categoryId: 2, image: "/placeholder.svg", stock: 10 },
-          { id: 4, name: "Necklace", price: 29.99, categoryId: 2, image: "/placeholder.svg", stock: 20 },
-          { id: 5, name: "Sneakers", price: 59.99, categoryId: 3, image: "/placeholder.svg", stock: 12 },
-          { id: 6, name: "Boots", price: 89.99, categoryId: 3, image: "/placeholder.svg", stock: 8 },
-          { id: 7, name: "Lipstick", price: 14.99, categoryId: 4, image: "/placeholder.svg", stock: 30 },
-          { id: 8, name: "Face Cream", price: 24.99, categoryId: 4, image: "/placeholder.svg", stock: 18 }
-        ]
-        
-        setCategories(sampleCategories)
-        setProducts(sampleProducts)
-        setFilteredProducts(sampleProducts)
+      
+      
       } finally {
         setIsLoading(false)
       }
@@ -110,9 +90,8 @@ export default function Caissier() {
     
     // Filter by category
     if (selectedCategory !== "all") {
-      filtered = filtered.filter(product => 
-        product.categoryId === parseInt(selectedCategory)
-      )
+      filtered = filtered.filter(product => product.category === selectedCategory);
+
     }
     
     // Filter by search term
@@ -295,7 +274,7 @@ export default function Caissier() {
                 <button
                   key={category.id}
                   className={selectedCategory === category.id.toString() ? "active" : ""}
-                  onClick={() => setSelectedCategory(category.id.toString())}
+                  onClick={() => setSelectedCategory(category.name)}
                 >
                   {category.name}
                 </button>

@@ -751,80 +751,239 @@ const formatMonth = (date) => {
 
 
 
-app.get('/metrics', (req, res) => {
-  const oneYearAgo = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
+// Metrics endpoint with dynamic period filtering
+app.get('/metrics', async (req, res) => {
+  try {
+    const period = req.query.period || 'monthly';
 
-  const totalSalesQuery = `
-    SELECT SUM(total_amount) as total_sales 
-    FROM (
-      SELECT total_amount, created_at FROM orders WHERE created_at >= ?
-      UNION ALL
-      SELECT total_amount, date as created_at FROM ordersboutique WHERE date >= ?
-    ) as combined
-  `;
+    // Determine date ranges based on the selected period
+    const now = dayjs();
+    let currentStart, previousStart, previousEnd;
 
-  const orderCountQuery = `
-    SELECT COUNT(*) as total_orders 
-    FROM (
-      SELECT id FROM orders WHERE created_at >= ?
-      UNION ALL
-      SELECT id FROM ordersboutique WHERE date >= ?
-    ) as combined
-  `;
+    switch (period) {
+      case 'daily':
+        currentStart = now.subtract(1, 'day').startOf('day');
+        previousStart = now.subtract(2, 'day').startOf('day');
+        previousEnd = now.subtract(1, 'day').startOf('day');
+        break;
+      case 'weekly':
+        currentStart = now.subtract(1, 'week').startOf('week');
+        previousStart = now.subtract(2, 'week').startOf('week');
+        previousEnd = now.subtract(1, 'week').startOf('week');
+        break;
+      case 'monthly':
+        currentStart = now.subtract(1, 'month').startOf('month');
+        previousStart = now.subtract(2, 'month').startOf('month');
+        previousEnd = now.subtract(1, 'month').startOf('month');
+        break;
+      case 'yearly':
+        currentStart = now.subtract(1, 'year').startOf('year');
+        previousStart = now.subtract(2, 'year').startOf('year');
+        previousEnd = now.subtract(1, 'year').startOf('year');
+        break;
+      default:
+        return res.status(400).json({ error: 'Invalid period' });
+    }
 
-  const customerCountQuery = 'SELECT COUNT(*) as total_customers FROM users';
+    const currentStartStr = currentStart.format('YYYY-MM-DD');
+    const previousStartStr = previousStart.format('YYYY-MM-DD');
+    const previousEndStr = previousEnd.format('YYYY-MM-DD');
 
-  const avgOrderValueQuery = `
-    SELECT AVG(total_amount) as avg_order_value FROM (
-      SELECT total_amount FROM orders WHERE created_at >= ?
-      UNION ALL
-      SELECT total_amount FROM ordersboutique WHERE date >= ?
-    ) as combined
-  `;
+    // Queries for current period
+    const currentSalesQuery = `
+      SELECT SUM(total_amount) as value 
+      FROM (
+        SELECT total_amount FROM orders WHERE created_at >= ?
+        UNION ALL
+        SELECT total_amount FROM ordersboutique WHERE date >= ?
+      ) as combined
+    `;
 
-  Promise.all([
-    new Promise((resolve, reject) => {
-      db.query(totalSalesQuery, [oneYearAgo, oneYearAgo], (err, results) => {
-        if (err) reject(err);
-        else resolve(results[0].total_sales || 0);
-      });
-    }),
-    new Promise((resolve, reject) => {
-      db.query(orderCountQuery, [oneYearAgo, oneYearAgo], (err, results) => {
-        if (err) reject(err);
-        else resolve(results[0].total_orders || 0);
-      });
-    }),
-    new Promise((resolve, reject) => {
-      db.query(customerCountQuery, (err, results) => {
-        if (err) reject(err);
-        else resolve(results[0].total_customers || 0);
-      });
-    }),
-    new Promise((resolve, reject) => {
-      db.query(avgOrderValueQuery, [oneYearAgo, oneYearAgo], (err, results) => {
-        if (err) reject(err);
-        else resolve(results[0].avg_order_value || 0);
-      });
-    })
-  ])
-    .then(([totalSales, totalOrders, totalCustomers, avgOrderValue]) => {
-      const metrics = [
-        { id: 1, title: "Total Sales", value: `$${totalSales.toFixed(2)}`, change: "+12%", period: "from last year" },
-        { id: 2, title: "Orders", value: `${totalOrders}`, change: "+8%", period: "from last year" },
-        { id: 3, title: "Customers", value: `${totalCustomers}`, change: "+5%", period: "from last year" },
-        { id: 4, title: "Avg. Order Value", value: `$${avgOrderValue.toFixed(2)}`, change: "+2.3%", period: "from last year" }
-      ];
+    const currentOrdersQuery = `
+      SELECT COUNT(*) as value 
+      FROM (
+        SELECT id FROM orders WHERE created_at >= ?
+        UNION ALL
+        SELECT id FROM ordersboutique WHERE date >= ?
+      ) as combined
+    `;
 
-      res.json(metrics);
-    })
-    .catch(err => {
-      console.error("Error fetching metrics:", err);
-      res.status(500).send("Error fetching metrics");
-    });
+    const currentAvgOrderQuery = `
+      SELECT AVG(total_amount) as value 
+      FROM (
+        SELECT total_amount FROM orders WHERE created_at >= ?
+        UNION ALL
+        SELECT total_amount FROM ordersboutique WHERE date >= ?
+      ) as combined
+    `;
+
+    // Queries for previous period
+    const previousSalesQuery = `
+      SELECT SUM(total_amount) as value 
+      FROM (
+        SELECT total_amount FROM orders WHERE created_at >= ? AND created_at < ?
+        UNION ALL
+        SELECT total_amount FROM ordersboutique WHERE date >= ? AND date < ?
+      ) as combined
+    `;
+
+    const previousOrdersQuery = `
+      SELECT COUNT(*) as value 
+      FROM (
+        SELECT id FROM orders WHERE created_at >= ? AND created_at < ?
+        UNION ALL
+        SELECT id FROM ordersboutique WHERE date >= ? AND date < ?
+      ) as combined
+    `;
+
+    const previousAvgOrderQuery = `
+      SELECT AVG(total_amount) as value 
+      FROM (
+        SELECT total_amount FROM orders WHERE created_at >= ? AND created_at < ?
+        UNION ALL
+        SELECT total_amount FROM ordersboutique WHERE date >= ? AND date < ?
+      ) as combined
+    `;
+
+    // Fetch current period data
+    const [currentSales, currentOrders, currentAvgOrder] = await Promise.all([
+      dbQuery(currentSalesQuery, [currentStartStr, currentStartStr]),
+      dbQuery(currentOrdersQuery, [currentStartStr, currentStartStr]),
+      dbQuery(currentAvgOrderQuery, [currentStartStr, currentStartStr]),
+    ]);
+
+    // Fetch previous period data
+    const [previousSales, previousOrders, previousAvgOrder] = await Promise.all([
+      dbQuery(previousSalesQuery, [previousStartStr, previousEndStr, previousStartStr, previousEndStr]),
+      dbQuery(previousOrdersQuery, [previousStartStr, previousEndStr, previousStartStr, previousEndStr]),
+      dbQuery(previousAvgOrderQuery, [previousStartStr, previousEndStr, previousStartStr, previousEndStr]),
+    ]);
+
+    // Fetch total customers (not time-based)
+    const totalCustomersQuery = 'SELECT COUNT(*) as value FROM users';
+    const totalCustomers = await dbQuery(totalCustomersQuery, []);
+
+    // Helper function to calculate percentage change
+    const calculateChange = (current, previous) => {
+      if (!previous || previous === 0) return "+0%";
+      const change = ((current - previous) / previous) * 100;
+      return `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`;
+    };
+
+    const metrics = [
+      {
+        id: 1,
+        title: "Total Sales",
+        value: `$${currentSales.toFixed(2)}`,
+        change: calculateChange(currentSales, previousSales),
+        period: "vs. previous period",
+      },
+      {
+        id: 2,
+        title: "Orders",
+        value: currentOrders,
+        change: calculateChange(currentOrders, previousOrders),
+        period: "vs. previous period",
+      },
+      {
+        id: 3,
+        title: "Customers",
+        value: totalCustomers,
+        change: "+0%", // Not time-based
+        period: "total count",
+      },
+      {
+        id: 4,
+        title: "Avg. Order Value",
+        value: `$${currentAvgOrder.toFixed(2)}`,
+        change: calculateChange(currentAvgOrder, previousAvgOrder),
+        period: "vs. previous period",
+      },
+    ];
+
+
+res.json({
+  metrics,
+ 
+});  } catch (err) {
+    console.error("Error fetching metrics:", err);
+    res.status(500).send("Error fetching metrics");
+  }
 });
 
+// Helper function to promisify db.query
+function dbQuery(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.query(sql, params, (err, results) => {
+      if (err) reject(err);
+      else resolve(results[0]?.value || 0);
+    });
+  });
+}
+// Helper to get MySQL DATE_FORMAT string based on period
+function getDateFormat(period) {
+  switch (period) {
+    case "daily":
+      return "%Y-%m-%d";
+    case "weekly":
+      return "%x-W%v"; // ISO week format
+    case "monthly":
+      return "%Y-%m";
+    case "yearly":
+      return "%Y";
+    default:
+      return "%Y-%m";
+  }
+}
 
+// Generic function to get aggregated data
+function getAggregatedData({ table, dateField, aggregateField, aggregateFunction, period, res }) {
+  const dateFormat = getDateFormat(period);
+
+  const sql = `
+    SELECT 
+      DATE_FORMAT(${dateField}, ?) AS period,
+      ${aggregateFunction}(${aggregateField}) AS value
+    FROM ${table}
+    GROUP BY period
+    ORDER BY period;
+  `;
+
+  db.query(sql, [dateFormat], (err, results) => {
+    if (err) {
+      console.error(`MySQL Error (${table}):`, err);
+      return res.status(500).json({ error: `Error fetching data from ${table}` });
+    }
+
+    res.json(results);
+  });
+}
+
+// GET: Sales Data
+app.get("/sales", (req, res) => {
+  const period = req.query.period || "monthly";
+  getAggregatedData({
+    table: "ordersboutique",
+    dateField: "date",
+    aggregateField: "total_amount",
+    aggregateFunction: "SUM",
+    period,
+    res,
+  });
+});
+
+// GET: Orders Count Data
+app.get("/orders/count", (req, res) => {
+  const period = req.query.period || "monthly";
+  getAggregatedData({
+    table: "orders",
+    dateField: "created_at",
+    aggregateField: "*",
+    aggregateFunction: "COUNT",
+    period,
+    res,
+  });
+});
 
 // 🚀 Start server
 const PORT = 5050;

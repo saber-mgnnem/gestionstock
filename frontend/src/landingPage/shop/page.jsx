@@ -53,54 +53,36 @@ export default function Page() {
 
     fetchData();
   }, []);
-
   useEffect(() => {
-    filterProducts();
-  }, [activeCategory, activeFilter, activeSort, priceRange, products]);
-
-  const filterProducts = () => {
     let filtered = [...products];
-
+  
     // Filter by category
     if (activeCategory !== "all") {
       filtered = filtered.filter(product => product.category === activeCategory);
     }
-
-    // Filter by "new" or "sale"
+  
+    // Filter by product filter (new, sale, all)
     if (activeFilter === "new") {
-      filtered = filtered.filter(product => product.isNew);
+      filtered = filtered.filter(product => product.is_new =="1");
     } else if (activeFilter === "sale") {
-      filtered = filtered.filter(product => product.isSale);
+      filtered = filtered.filter(product => product.is_sale == "1");
     }
-
-    // Filter by price
-    filtered = filtered.filter(product => {
-      const price = product.isSale
-        ? product.price - (product.price * product.discount) / 100
-        : product.price;
-      return price >= priceRange[0] && price <= priceRange[1];
-    });
-
+  
+    // Filter by price range
+    filtered = filtered.filter(product => product.price >= priceRange[0] && product.price <= priceRange[1]);
+  
     // Sort products
     if (activeSort === "price-low") {
-      filtered.sort((a, b) => {
-        const priceA = a.isSale ? a.price - (a.price * a.discount) / 100 : a.price;
-        const priceB = b.isSale ? b.price - (b.price * b.discount) / 100 : b.price;
-        return priceA - priceB;
-      });
+      filtered.sort((a, b) => a.price - b.price);
     } else if (activeSort === "price-high") {
-      filtered.sort((a, b) => {
-        const priceA = a.isSale ? a.price - (a.price * a.discount) / 100 : a.price;
-        const priceB = b.isSale ? b.price - (b.price * b.discount) / 100 : b.price;
-        return priceB - priceA;
-      });
+      filtered.sort((a, b) => b.price - a.price);
     } else if (activeSort === "rating") {
       filtered.sort((a, b) => b.rating - a.rating);
     }
-
+  
     setFilteredProducts(filtered);
-  };
-
+  }, [products, activeCategory, activeFilter, priceRange, activeSort]);
+  
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
   };
@@ -156,7 +138,7 @@ export default function Page() {
                   <li
                     key={category.id}
                     className={activeCategory === category.id ? "active" : ""}
-                    onClick={() => handleCategoryChange(category.id)}
+                    onClick={() => handleCategoryChange(category.name)}
                   >
                     {category.name}
                   </li>
